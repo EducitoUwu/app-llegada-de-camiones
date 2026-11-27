@@ -7,19 +7,17 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="pagina-form">
+  <header class="barra"><a href="index.html">← Inicio</a></header>
   <main class="contenedor">
-    <a class="volver" href="index.html">← Inicio</a>
     <h1>Centro Logístico</h1>
     <p class="sub">Toca la cantidad de pallets del camión que sale a recepción. Llega al CD en ~<span id="minutos-cl"></span> min.</p>
 
     <div id="botones" class="botones"></div>
 
-    <form id="form-otro" class="otro">
-      <input id="otro" type="number" min="1" max="60" placeholder="Otra cantidad" />
-      <button type="submit">Enviar</button>
-    </form>
-
     <p id="mensaje" class="mensaje" role="status"></p>
+
+    <h2>Avisos enviados</h2>
+    <ul id="lista" class="lista"></ul>
   </main>
   <script type="module" src="js/cl.js"></script>
 </body>

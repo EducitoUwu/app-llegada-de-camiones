@@ -3,17 +3,45 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Llegada de camiones — Piloto</title>
+  <title>Llegada de camiones — CD Coquimbo</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body class="pagina-form">
-  <main class="contenedor">
+<body class="inicio">
+  <header class="hero">
+    <svg class="hero-icono" viewBox="0 0 64 40" aria-hidden="true">
+      <path d="M2 6h36v24H2z" fill="currentColor" opacity=".9"/>
+      <path d="M40 14h12l8 9v7H40z" fill="currentColor"/>
+      <path d="M44 17h7l5 6H44z" fill="#00843d"/>
+      <circle cx="12" cy="32" r="5" fill="currentColor" stroke="#00843d" stroke-width="3"/>
+      <circle cx="50" cy="32" r="5" fill="currentColor" stroke="#00843d" stroke-width="3"/>
+    </svg>
     <h1>Llegada de camiones</h1>
-    <p class="sub">Piloto de coordinación de recargue y recepción.</p>
+    <p>Centro de Distribución Coquimbo</p>
+  </header>
+
+  <main class="contenedor">
     <nav class="menu">
-      <a href="distribucion.html"><strong>Distribución</strong><span>Informar camión que viene a recargue</span></a>
-      <a href="cl.html"><strong>Centro Logístico</strong><span>Informar camión de recepción (pallets)</span></a>
-      <a href="cd.html"><strong>Centro de Distribución</strong><span>Pantalla de camiones próximos a llegar</span></a>
+      <a href="distribucion.html">
+        <span class="menu-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5z"/></svg>
+        </span>
+        <span class="menu-texto"><strong>Distribución</strong><span>Informar camión que viene a recargue</span></span>
+        <span class="flecha" aria-hidden="true">›</span>
+      </a>
+      <a href="cl.html">
+        <span class="menu-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 15h18v2H3zm2 3h3v3H5zm11 0h3v3h-3zM4 4h7v9H4zm9 3h7v6h-7z"/></svg>
+        </span>
+        <span class="menu-texto"><strong>Centro Logístico</strong><span>Informar camión de recepción (pallets)</span></span>
+        <span class="flecha" aria-hidden="true">›</span>
+      </a>
+      <a href="cd.html">
+        <span class="menu-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 4h18a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-7v2h3v2H7v-2h3v-2H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 2v9h16V6z"/></svg>
+        </span>
+        <span class="menu-texto"><strong>Centro de Distribución</strong><span>Pantalla de camiones próximos a llegar</span></span>
+        <span class="flecha" aria-hidden="true">›</span>
+      </a>
     </nav>
   </main>
 </body>

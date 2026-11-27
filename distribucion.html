@@ -11,15 +11,19 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="pagina-form">
+  <header class="barra"><a href="index.html">← Inicio</a></header>
   <main class="contenedor">
-    <a class="volver" href="index.html">← Inicio</a>
     <h1>Distribución</h1>
     <p class="sub">Informa el próximo camión que viene a recargue.</p>
 
     <form id="form" class="tarjeta-form" autocomplete="off">
-      <label>N° de camión
-        <input id="camion" required maxlength="20" placeholder="Ej: 245" inputmode="text" />
-      </label>
+      <div class="campo">
+        <label for="camion">N° de camión</label>
+        <div class="con-prefijo">
+          <span class="prefijo">E-</span>
+          <input id="camion" required maxlength="15" placeholder="46" inputmode="numeric" />
+        </div>
+      </div>
       <div class="campo">
         <label for="ubicacion">Ubicación actual</label>
         <div class="fila">
@@ -39,7 +43,7 @@
       <p id="mensaje" class="mensaje" role="status"></p>
     </form>
 
-    <h2>Camiones en camino</h2>
+    <h2>Avisos enviados</h2>
     <ul id="lista" class="lista"></ul>
   </main>
   <script type="module" src="js/distribucion.js"></script>

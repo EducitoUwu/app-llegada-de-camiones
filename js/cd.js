@@ -22,7 +22,7 @@ function tarjeta(l, ahora) {
   const t = el("article", `tarjeta ${estado(l.eta, ahora)}`);
   const izq = el("div");
   if (l.tipo === "recarga") {
-    izq.append(el("div", "titulo", `Camión ${l.camion}`), el("div", "detalle", l.origen));
+    izq.append(el("div", "titulo", l.camion), el("div", "detalle", l.origen));
   } else {
     izq.append(el("div", "titulo", `${l.pallets} pallets`), el("div", "detalle", "Desde Centro Logístico"));
   }

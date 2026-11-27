@@ -19,6 +19,19 @@ export async function agregarLlegada(datos) {
   await b.agregar({ ...datos, expiraEn });
 }
 
+/** Modifica campos de una llegada. Si cambia `eta`, se recalcula `expiraEn`. */
+export async function actualizarLlegada(id, cambios) {
+  const c = { ...cambios };
+  if (c.eta != null) c.expiraEn = c.eta + CONFIG.minutosGracia * 60_000;
+  const b = await backend();
+  await b.actualizar(id, c);
+}
+
+export async function eliminarLlegada(id) {
+  const b = await backend();
+  await b.eliminar(id);
+}
+
 /** Llama a `cb(lista)` cada vez que cambian las llegadas vigentes. Devuelve función para cancelar. */
 export function suscribirLlegadas(cb) {
   let cancelar = () => {};
@@ -52,6 +65,15 @@ async function firebaseBackend() {
         expiraEn: fs.Timestamp.fromMillis(d.expiraEn),
         creadoEn: fs.serverTimestamp(),
       });
+    },
+    async actualizar(id, c) {
+      const datos = { ...c };
+      if (c.eta != null) datos.eta = fs.Timestamp.fromMillis(c.eta);
+      if (c.expiraEn != null) datos.expiraEn = fs.Timestamp.fromMillis(c.expiraEn);
+      await fs.updateDoc(fs.doc(col, id), datos);
+    },
+    async eliminar(id) {
+      await fs.deleteDoc(fs.doc(col, id));
     },
     suscribir(cb) {
       // Solo trae lo no vencido; los documentos viejos los borra la política TTL de Firestore.
@@ -87,12 +109,20 @@ function demoBackend() {
     if (e.key === KEY) oyentes.forEach((cb) => cb(leer()));
   });
 
+  const guardar = (lista) => {
+    localStorage.setItem(KEY, JSON.stringify(lista));
+    oyentes.forEach((cb) => cb(lista));
+  };
+
   return {
     async agregar(d) {
-      const lista = vigentes(leer());
-      lista.push({ ...d, id: crypto.randomUUID() });
-      localStorage.setItem(KEY, JSON.stringify(lista));
-      oyentes.forEach((cb) => cb(lista));
+      guardar([...vigentes(leer()), { ...d, id: crypto.randomUUID() }]);
+    },
+    async actualizar(id, c) {
+      guardar(leer().map((l) => (l.id === id ? { ...l, ...c } : l)));
+    },
+    async eliminar(id) {
+      guardar(leer().filter((l) => l.id !== id));
     },
     suscribir(cb) {
       oyentes.add(cb);

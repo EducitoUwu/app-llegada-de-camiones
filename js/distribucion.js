@@ -1,6 +1,8 @@
 import { CONFIG } from "./config.js";
-import { agregarLlegada, suscribirLlegadas, vigentes } from "./store.js";
-import { avisoDemo, el, faltan, hora, mensaje } from "./comun.js";
+import { actualizarLlegada, agregarLlegada, eliminarLlegada, suscribirLlegadas, vigentes } from "./store.js";
+import {
+  avisoDemo, boton, campoCamion, el, faltan, hora, listaAvisos, mensaje, normalizarCamion, numeroCamion,
+} from "./comun.js";
 
 avisoDemo();
 
@@ -206,7 +208,7 @@ async function rutaGoogle(o, textoLibre) {
 // ============================================================ Envío
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const camion = inCamion.value.trim();
+  const camion = normalizarCamion(inCamion.value);
   const texto = inUbicacion.value.trim();
   const manual = parseInt(inMinutos.value, 10);
   if (!camion || !texto) return;
@@ -264,20 +266,60 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ============================================================ Lista de camiones ya informados
-let datos = [];
-function render() {
-  const items = vigentes(datos).filter((l) => l.tipo === "recarga");
-  lista.replaceChildren(
-    ...(items.length
-      ? items.map((l) => {
-          const li = el("li");
-          li.append(el("strong", null, `Camión ${l.camion}`), el("span", null, ` — ${l.origen}`), el("span", "derecha", `${hora(l.eta)} · ${faltan(l.eta)}`));
-          return li;
-        })
-      : [el("li", "vacio", "Ningún camión informado todavía.")])
-  );
+// ============================================================ Avisos enviados (modificar / eliminar)
+/** Formulario para modificar N° de camión y minutos que faltan. */
+function editorRecarga(l, cerrar) {
+  const f = el("form", "editor");
+  const { caja, input } = campoCamion(numeroCamion(l.camion));
+  const min = el("input");
+  min.type = "number";
+  min.min = "1";
+  min.max = "600";
+  min.required = true;
+  min.value = Math.max(1, Math.ceil((l.eta - Date.now()) / 60_000));
+  const lCam = el("label", null, "N° de camión");
+  const lMin = el("label", null, "Minutos que faltan");
+  lCam.append(caja);
+  lMin.append(min);
+  const bGuardar = boton("Guardar", "boton-chico primario", "submit");
+  const bCancelar = boton("Cancelar");
+  bCancelar.addEventListener("click", cerrar);
+  const acciones = el("div", "acciones");
+  acciones.append(bGuardar, bCancelar);
+  f.append(lCam, lMin, acciones);
+  f.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const camion = normalizarCamion(input.value);
+    const minutos = parseInt(min.value, 10);
+    if (!camion || !(minutos > 0)) return;
+    bGuardar.disabled = true;
+    try {
+      await actualizarLlegada(l.id, { camion, minutos, eta: Date.now() + minutos * 60_000 });
+      mensaje(msg, `Aviso de ${camion} modificado.`);
+      cerrar();
+    } catch (err) {
+      console.error(err);
+      alert(`No se pudo modificar: ${err.message}`);
+      bGuardar.disabled = false;
+    }
+  });
+  setTimeout(() => input.focus());
+  return f;
 }
+
+const avisos = listaAvisos(lista, {
+  vacio: "Ningún camión informado todavía.",
+  titulo: (l) => l.camion,
+  detalle: (l) => `${l.origen} · llega ${hora(l.eta)} (${faltan(l.eta)})`,
+  editor: editorRecarga,
+  onEliminar: async (l) => {
+    await eliminarLlegada(l.id);
+    mensaje(msg, `Aviso de ${l.camion} eliminado.`);
+  },
+});
+
+let datos = [];
+const render = () => avisos.actualizar(vigentes(datos).filter((l) => l.tipo === "recarga"));
 suscribirLlegadas((d) => {
   datos = d;
   render();
