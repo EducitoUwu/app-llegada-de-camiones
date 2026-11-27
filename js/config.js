@@ -6,14 +6,14 @@ export const CONFIG = {
   // Objeto de configuración de Firebase (Consola Firebase → Configuración del proyecto → Tus apps → Web).
   // Mientras sea null, la app funciona en MODO DEMO: los datos se guardan en este navegador
   // y solo se comparten entre pestañas del mismo computador.
-  firebase: null,
-  // Ejemplo:
-  // firebase: {
-  //   apiKey: "AIza...",
-  //   authDomain: "mi-proyecto.firebaseapp.com",
-  //   projectId: "mi-proyecto",
-  //   appId: "1:123:web:abc",
-  // },
+  firebase: {
+    apiKey: "AIzaSyAW46gSNOel1uRfETNaHPfsiMKsUz89f9A",
+    authDomain: "llegada-camiones-ccu.firebaseapp.com",
+    projectId: "llegada-camiones-ccu",
+    storageBucket: "llegada-camiones-ccu.firebasestorage.app",
+    messagingSenderId: "848430653278",
+    appId: "1:848430653278:web:eaef259e19b115d6a3b9cf",
+  },
 
   // API key de Google Cloud con "Routes API" habilitada. Vacío = Distribución ingresa los minutos a mano.
   googleMapsApiKey: "",
@@ -22,8 +22,8 @@ export const CONFIG = {
   // REEMPLAZAR por las coordenadas exactas del CD (clic derecho en Google Maps → copiar coordenadas).
   destino: {
     nombre: "Centro de Distribución Coquimbo",
-    lat: -29.9533,
-    lng: -71.3436,
+    lat: -29.9716787,
+    lng: -71.26806,
   },
 
   // Texto que se agrega a las direcciones para que Google no las confunda con otras ciudades.
