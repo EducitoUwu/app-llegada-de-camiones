@@ -40,6 +40,12 @@ input {
 }
 input:focus { outline: 2px solid var(--primario); outline-offset: 1px; border-color: transparent; }
 .nota { margin: 6px 0 0; color: var(--suave); font-size: 14px; }
+.campo { display: grid; gap: 6px; }
+.campo > label { display: block; }
+.fila { display: flex; gap: 8px; }
+.fila input { flex: 1; min-width: 0; }
+.boton-secundario { background: #fff; border: 1px solid var(--borde); padding: 0 18px; font-weight: 600; }
+.mapa { height: 320px; border-radius: 8px; border: 1px solid var(--borde); margin-top: 4px; z-index: 0; }
 
 button { font: inherit; cursor: pointer; border-radius: 10px; border: none; }
 button:disabled { opacity: .5; cursor: progress; }

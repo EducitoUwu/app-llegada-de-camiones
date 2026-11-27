@@ -15,7 +15,11 @@ export const CONFIG = {
     appId: "1:848430653278:web:eaef259e19b115d6a3b9cf",
   },
 
-  // API key de Google Cloud con "Routes API" habilitada. Vacío = Distribución ingresa los minutos a mano.
+  // Cálculo de ETA. Se usa la primera clave que esté puesta (OpenRouteService primero).
+  // Si ninguna está puesta, Distribución ingresa los minutos a mano.
+  //  - OpenRouteService: gratis, sin tarjeta, perfil camión. https://openrouteservice.org/dev/#/signup
+  //  - Google Routes API: con tráfico real, requiere facturación en Google Cloud.
+  orsApiKey: "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImFjYmMxZjM2OGUzMDQ5Y2ZiMjNlNjdjNTM1ZTVjM2ZjIiwiaCI6Im11cm11cjY0In0=",
   googleMapsApiKey: "",
 
   // Ubicación del Centro de Distribución (destino de todos los camiones).
@@ -26,14 +30,16 @@ export const CONFIG = {
     lng: -71.26806,
   },
 
-  // Texto que se agrega a las direcciones para que Google no las confunda con otras ciudades.
+  // Texto que se agrega a las direcciones para que no se confundan con otras ciudades.
   sufijoDireccion: ", Región de Coquimbo, Chile",
 
   // Minutos fijos desde el Centro Logístico (CL) al CD.
   minutosCL: 5,
 
-  // Google calcula tiempos de auto; un camión es más lento. 1.15 = +15%.
-  factorCamion: 1.15,
+  // Ajuste al tiempo calculado. 1.15 = +15%.
+  // Google calcula con tiempos de auto (por eso +15%); OpenRouteService ya usa velocidades de camión
+  // pero sin tráfico. Ajustar según lo que se observe en el piloto.
+  factorCamion: { ors: 1.1, google: 1.15 },
 
   // Minutos que un camión sigue en pantalla después de su hora estimada (luego desaparece solo).
   minutosGracia: 10,
